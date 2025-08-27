@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoAmazon - Sua Loja de Ofertas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: #0066c0;
+        }
+        
+        /* Cabeçalho */
+        header {
+            background: linear-gradient(to right, #232f3e, #146eb4);
+            color: white;
+            padding: 15px 5%;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            color: #ff9900;
+        }
+        
+        /* Menu mobile */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        
+        .menu-toggle span {
+            height: 3px;
+            width: 25px;
+            background: white;
+            margin-bottom: 5px;
+            border-radius: 2px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 25px;
+        }
+        
+        nav ul li a {
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #ff9900;
+        }
+        
+        /* Conteúdo principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1607082350899-7e105aa886ae?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .banner h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .banner p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #ff9900;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #e88a00;
+        }
+        
+        /* Produtos */
+        .section-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            color: #232f3e;
+            font-size: 2rem;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        /* Classe base para produtos - FÁCIL DE REUTILIZAR */
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .product-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #232f3e;
+        }
+        
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #b12704;
+            margin: 10px 0;
+        }
+        
+        .product-link {
+            margin-top: auto;
+            text-align: center;
+        }
+        
+        /* Informações e Contato */
+        .info-section {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+        
+        .info-section h2 {
+            color: #232f3e;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .contact-form {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Rodapé */
+        footer {
+            background: #232f3e;
+            color: white;
+            padding: 40px 5%;
+            margin-top: 50px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: #ff9900;
+        }
+        
+        .footer-section p, .footer-section a {
+            margin-bottom: 10px;
+            display: block;
+            color: #ddd;
+        }
+        
+        .footer-section a:hover {
+            color: #ff9900;
+        }
+        
+        .social-icons a {
+            display: inline-block;
+            margin-right: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #3a4553;
+            color: #aaa;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+            
+            nav {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background: #232f3e;
+                transition: 0.3s;
+                z-index: 99;
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                padding: 30px;
+            }
+            
+            nav ul li {
+                margin: 15px 0;
+            }
+            
+            .banner {
+                padding: 50px 20px;
+            }
+            
+            .banner h1 {
+                font-size: 2rem;
+            }
+            
+            .info-section {
+                padding: 25px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .banner h1 {
+                font-size: 1.7rem;
+            }
+            
+            .section-title {
+                font-size: 1.7rem;
+            }
+            
+            .product-price {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Cabeçalho com Menu -->
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-store"></i>
+                <span>PromoAmazon</span>
+            </div>
+            
+            <div class="menu-toggle" id="mobile-menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <nav id="nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Produtos</a></li>
+                    <li><a href="#about">Sobre Nós</a></li>
+                    <li><a href="#contact">Contato</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <div class="container">
+        <!-- Banner Principal -->
+        <section class="banner" id="home">
+            <h1>As Melhores Ofertas da Amazon</h1>
+            <p>Encontre aqui os produtos com descontos incríveis diretamente da Amazon. Tecnologia, casa, livros e muito mais!</p>
+            <a href="#products" class="btn">Ver Ofertas</a>
+        </section>
+
+        <!-- Produtos em Destaque -->
+        <h2 class="section-title" id="products">Destaques da Semana</h2>
+        <div class="products-grid">
+            <!-- Produto 1 - EXEMPLO DE CLASSE REUTILIZÁVEL -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1554254648-3a9c8d23e9cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fone de Ouvido Bluetooth">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Fone de Ouvido Bluetooth Premium</h3>
+                    <p class="product-description">Cancelamento de ruído, bateria de 30h e qualidade de som excepcional.</p>
+                    <div class="product-price">R$ 199,90</div>
+                    <div class="product-link">
+                        <a href="https://www.amazon.com.br" class="btn" target="_blank">Ver na Amazon</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 2 - MESMA CLASSE, FÁCIL DE ADICIONAR -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Smartwatch">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Smartwatch Inteligente</h3>
+                    <p class="product-description">Monitor de frequência cardíaca, notificações e resistente à água.</p>
+                    <div class="product-price">R$ 249,90</div>
+                    <div class="product-link">
+                        <a href="https://www.amazon.com.br" class="btn" target="_blank">Ver na Amazon</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 3 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Fones de Ouvido">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Fone de Ouvido com Cancelamento de Ruído</h3>
+                    <p class="product-description">Som premium, confortável e com até 20 horas de bateria.</p>
+                    <div class="product-price">R$ 299,90</div>
+                    <div class="product-link">
+                        <a href="https://www.amazon.com.br" class="btn" target="_blank">Ver na Amazon</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Produto 4 -->
+            <div class="product-card">
+                <div class="product-image">
+                    <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" alt="Câmera Instantânea">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Câmera Instantânea Digital</h3>
+                    <p class="product-description">Imprime fotos instantaneamente, conexão Bluetooth e fácil de usar.</p>
+                    <div class="product-price">R$ 349,90</div>
+                    <div class="product-link">
+                        <a href="https://www.amazon.com.br" class="btn" target="_blank">Ver na Amazon</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção de Informações -->
+        <section class="info-section" id="about">
+            <h2>Sobre a PromoAmazon</h2>
+            <p>Somos especialistas em encontrar as melhores promoções e ofertas disponíveis na Amazon. Nosso objetivo é conectar você aos produtos que realmente valem a pena, com descontos reais e qualidade garantida.</p>
+            <p>Trabalhamos para facilitar sua experiência de compra, selecionando apenas produtos com boas avaliações e preços competitivos. Todas as vendas são realizadas diretamente pela Amazon, garantindo segurança e confiabilidade.</p>
+            <p>Navegue à vontade e aproveite as ofertas! Nosso site é atualizado diariamente com novos produtos em promoção.</p>
+        </section>
+
+        <!-- Seção de Contato -->
+        <section class="info-section" id="contact">
+            <h2>Entre em Contato</h2>
+            <p>Tem alguma dúvida, sugestão ou quer reportar um link quebrado? Entre em contato conosco através do formulário abaixo:</p>
+            
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" placeholder="Seu nome completo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" placeholder="seu@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Mensagem:</label>
+                    <textarea id="message" placeholder="Digite sua mensagem aqui..."></textarea>
+                </div>
+                
+                <button type="submit" class="btn">Enviar Mensagem</button>
+            </form>
+        </section>
+    </div>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>PromoAmazon</h3>
+                <p>Encontre as melhores promoções da Amazon em um só lugar. Sua loja de confiança para economizar em compras online.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <a href="#home">Home</a>
+                <a href="#products">Produtos</a>
+                <a href="#about">Sobre Nós</a>
+                <a href="#contact">Contato</a>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Redes Sociais</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+                <p>Siga-nos para ficar por dentro das últimas promoções!</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Informações</h3>
+                <p><i class="fas fa-envelope"></i> contato@promoamazon.com.br</p>
+                <p><i class="fas fa-phone"></i> (11) 99999-9999</p>
+                <p><i class="fas fa-map-marker-alt"></i> São Paulo, Brasil</p>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 PromoAmazon - Todos os direitos reservados</p>
+        </div>
+    </footer>
+
+    <script>
+        // Menu mobile toggle
+        document.getElementById('mobile-menu').addEventListener('click', function() {
+            document.getElementById('nav').classList.toggle('active');
+        });
+        
+        // Fechar menu ao clicar em um link
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('nav').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
