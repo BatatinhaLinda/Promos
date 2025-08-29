@@ -367,3 +367,6 @@ footer {
 .suporte::after {
     color: var(--primary-dark);
 }
+.suporte {
+    text-decoration: underline;
+}
